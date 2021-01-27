@@ -138,8 +138,17 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
       .style("fill", "#69b3a2")
       .style("opacity", 0.3)
       .style("stroke", "#69b3a2")
-      .on("mouseover", tip.show)
-      .on("mouseout", tip.hide)
+      .on("mouseover", function(d){
+        d3.select(this)
+        .style("stroke", "red");
+        tip.show(d,this);
+      })
+
+      .on("mouseout", function(d){
+        d3.select(this)
+        .style("stroke", "transparent");
+        tip.hide(d,this);
+      })
       
 
 
