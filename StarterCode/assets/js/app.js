@@ -123,10 +123,10 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
       .attr("dy", "0.4em")
       .text(function (d) { return (d.abbr)})
 
+  
 
 
-
-  // Add dots
+  // Add circles
   var circles = chartGroup
     .selectAll("circle")
     .data(riskData)
