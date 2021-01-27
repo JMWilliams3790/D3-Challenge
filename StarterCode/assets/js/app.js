@@ -68,6 +68,8 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
        return `${d.state}<br/>${currentXlabel}: ${xvalue}<br/>${currentYlabel}: ${yvalue}`; 
     });
 
+    
+
     /* Invoke the tip in the context of your visualization */
     svg.call(tip)
 
@@ -108,6 +110,22 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
         .attr("id", "yaxis")
         .call(leftAxis);
 
+
+//add state abbreviations
+  var circleLabels = chartGroup
+    .selectAll(null)
+    .data(riskData)
+    .enter()
+    .append("text")
+      .classed("stateText", true)
+      .attr("x", function (d) { return xLinearScale(d.poverty); } )
+      .attr("y", function (d) { return yLinearScale(d.healthcare); } )
+      .attr("dy", "0.4em")
+      .text(function (d) { return (d.abbr)})
+
+
+
+
   // Add dots
   var circles = chartGroup
     .selectAll("circle")
@@ -119,23 +137,16 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
       .attr("r", 15)
       .style("fill", "#69b3a2")
       .style("opacity", 0.3)
-      .style("stroke", "69b3a2")
+      .style("stroke", "#69b3a2")
       .on("mouseover", tip.show)
-      .on("mouseout", tip.hide);
+      .on("mouseout", tip.hide)
+      
 
-  var circleLabels = chartGroup
-    .selectAll(null)
-    .data(riskData)
-    .enter()
-    .append("text")
-      .classed("stateText", true)
-      .attr("x", function (d) { return xLinearScale(d.poverty); } )
-      .attr("y", function (d) { return yLinearScale(d.healthcare); } )
-      .attr("dy", "0.4em")
-      .text(function (d) { return (d.abbr)})
-      .on("mouseover", tip.show)
-      .on("mouseout", tip.hide);
+
+
+      
 // Name X-axis
+// Poverty
   chartGroup
   .append("text")
       .attr("transform", `translate (${width/2},${height + 30})`)
@@ -166,6 +177,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
           .transition(t)
           .attr("x", function (d) { return xLinearScale(d.poverty); } )
        })
+  //Age
   chartGroup
   .append("text")
       .attr("transform", `translate (${width/2},${height + 50})`)
@@ -198,6 +210,7 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
 
 
        })
+  //Income
   chartGroup
   .append("text")
       .attr("transform", `translate (${width/2},${height + 70})`)
@@ -235,16 +248,16 @@ d3.csv("assets/data/data.csv").then(function(riskData) {
       .attr("y", 0-margin.left + 70)
       .text("Lacks Healthcare %")
       .on("click", function(){
-      currentYlabel = "Healthcare"
-      var extentY = d3.extent(riskData, d => d.healthcare);
-      var rangeY = extentY[1] - extentY[0]
-      var domainY = [
-        extentY[0] - rangeY * .04,
-        extentY[1] + rangeY * .04
-      ]
+        currentYlabel = "Healthcare"
+        var extentY = d3.extent(riskData, d => d.healthcare);
+        var rangeY = extentY[1] - extentY[0]
+        var domainY = [
+          extentY[0] - rangeY * .04,
+          extentY[1] + rangeY * .04
+        ]
    var yLinearScale = d3.scaleLinear()
-      .domain(domainY)
-      .range([height, 0]);  
+        .domain(domainY)
+        .range([height, 0]);  
       var leftAxis = d3.axisLeft(yLinearScale);
       d3.select("#yaxis")
         .transition(t)
